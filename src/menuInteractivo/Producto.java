@@ -3,12 +3,10 @@ package menuInteractivo;
 public class Producto {
 	private String nombre;
 	private float precio;
-	private int contador = 0;
 	
-	public Producto(String nombre, float precio, int contador) {
+	public Producto(String nombre, float precio) {
 		this.nombre = nombre;
 		this.precio = precio;
-		this.contador = contador;
 	}
 	public Producto() {
 		
@@ -31,12 +29,6 @@ public class Producto {
 	}
 	public void mostrarDatos() {
 		System.out.println("El nombre del producto es " + nombre + " y su precio es de " + precio);
-	}
-	public int getContador() {
-		return contador;
-	}
-	public void setContador(int contador) {
-		this.contador = contador;
 	}
 	
 }
