@@ -1,12 +1,15 @@
 package menuInteractivo;
 import java.util.ArrayList;
+
 import java.util.InputMismatchException;
 import java.util.Scanner;
-import java.util.regex.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class MenuInteractivo {
 	public static void main(String[] args) {
 	    ArrayList<Producto> lsProd = new ArrayList<Producto>();
+	    Scanner sc = new Scanner(System.in);
 	    System.out.println("Bienvenido al administrador de productos. ¿Qué te gustaría hacer?");
 	    int seleccion = -1;
 	    do {
@@ -42,7 +45,8 @@ public class MenuInteractivo {
 		    Producto nuevoProducto = new Producto(nombre, precio);
 		    return nuevoProducto;
 	    } catch (Exception e) {
-	    	throw new IllegalArgumentException("Debes introducir un número con decimales");
+	    	System.out.println("Debes introducir un número. (Recuerda utilizar coma (\",\") para los decimales");
+	    	return crearProducto();
 	    }
 	    
 	}
@@ -58,34 +62,34 @@ public class MenuInteractivo {
 			Producto prodBuscar = encontrarProd(arrayLs);
 			prodBuscar.mostrarDatos();
 		} catch (IllegalArgumentException e) {
-			e.getMessage();
+			System.out.println("Prueba con otro nombre");
 		} 
 	}
 	public static void modPrecio(ArrayList<Producto> arrayLs) {
 		Scanner sc = new Scanner(System.in);
-		System.out.println("Introduce el nombre del producto del cual quieres modificar el precio");
+		System.out.println("Introduce el nombre del producto del cual quieres modificar el precio: ");
 		try {
 			Producto prodMod = encontrarProd(arrayLs);
-			System.out.println("Introduce el nuevo precio del producto");
+			System.out.println("Introduce el nuevo precio del producto: ");
 			float precio = sc.nextFloat();
+			checkRegex(precio);
 			prodMod.setPrecio(precio);
-		} catch (IllegalArgumentException e) {
-			e.getMessage();
+			System.out.println("Precio modificado correctamente.");
 		} catch (InputMismatchException e) {
-			System.out.println("Debes introducir un número con decimales");
-		} 
+			System.out.println("Debes introducir un número con un máximo de 2 decimales. (Recuerda utilizar coma (\",\") para los decimales");
+		} catch (IllegalArgumentException e) {
+			System.out.println("Reintenta con otro nombre");
+		}
 	}
 	public static void eliminarProd(ArrayList<Producto> arrayLs) {
 		Scanner sc = new Scanner(System.in);
-		System.out.println("Introduce el nombre del producto que quieres eliminar");
+		System.out.println("Introduce el nombre del producto que quieres eliminar: ");
 		try {
 			Producto prodEli = encontrarProd(arrayLs);
 			arrayLs.remove(arrayLs.indexOf(prodEli));
 			System.out.println("Producto eliminado");
 		} catch (IllegalArgumentException e) {
-			e.getMessage();
-		} catch (InputMismatchException e) {
-			e.getMessage();
+			System.out.println("Reintenta con otro nombre");
 		} 
 	}
 	public static void mostrarProd(ArrayList<Producto> arrayLs) {
@@ -121,5 +125,14 @@ public class MenuInteractivo {
 			System.out.println("Debes introducir un número entero del 0 al 5");
 		}
 		return seleccion;
+	}
+	public static float checkRegex(float precio) {
+		Pattern patern = Pattern.compile("^\\d+(\\.\\d{1,2})?$");
+		String precioRegex = String.valueOf(precio);
+		Matcher matcher = patern.matcher(precioRegex);
+		if (matcher.matches()) {
+			return precio;
+		}
+		throw new InputMismatchException("Debes introducir un número con máximo 2 decimales. (Recuerda utilizar coma (\",\") para los decimales");
 	}
 }
