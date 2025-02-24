@@ -13,7 +13,8 @@ public class MenuInteractivo {
 	    System.out.println("Bienvenido al administrador de productos. ¿Qué te gustaría hacer?");
 	    int seleccion = -1;
 	    do {
-	        seleccion = obtenerEntero();
+	    	System.out.println("\n---------------MENU-------------\n1. Agregar un producto\n2. Buscar un producto\n3. Modificar el precio de un producto\n4. Eliminar un producto\n5. Mostrar todos los productos\n0. Salir del programa");
+	        seleccion = obtenerEntero(sc.nextLine());
 	        switch (seleccion) {
 	            case 1: 
 	                aggProd(lsProd);
@@ -32,6 +33,8 @@ public class MenuInteractivo {
 	            	break;
 	            case 0:
 	            	seleccion = 0;
+	            default:
+	            	System.out.println("Debes introducir un número entero del 0 al 5");
 	        }
 	    } while (seleccion != 0);
 	}
@@ -42,6 +45,7 @@ public class MenuInteractivo {
 		    String nombre = sc.nextLine();
 		    System.out.println("Introduce el precio del producto:");
 		    float precio = sc.nextFloat();
+		    checkRegex(precio);
 		    Producto nuevoProducto = new Producto(nombre, precio);
 		    return nuevoProducto;
 	    } catch (Exception e) {
@@ -113,17 +117,12 @@ public class MenuInteractivo {
 			System.out.println("Producto no encontrado");
 			throw new IllegalArgumentException("Producto no encontrado con ese nombre");
 	}
-	public static int obtenerEntero() {
-		Scanner sc = new Scanner(System.in);
-		System.out.println("\n---------------MENU-------------\n1. Agregar un producto\n2. Buscar un producto\n3. Modificar el precio de un producto\n4. Eliminar un producto\n5. Mostrar todos los productos\n0. Salir del programa");
+	public static int obtenerEntero(String entero) {
 		int seleccion = -1;
 		try {
-			seleccion = sc.nextInt();
+			seleccion = Integer.parseInt(entero);
 		} catch (NumberFormatException e) {
-			System.out.println("Debes introducir un número entero del 0 al 5");
-		} catch (InputMismatchException e) {
-			System.out.println("Debes introducir un número entero del 0 al 5");
-		}
+		} 
 		return seleccion;
 	}
 	public static float checkRegex(float precio) {
